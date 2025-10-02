@@ -21,8 +21,8 @@ export default function Layout(props) {
                     Caffiend
                 </span> was made by <a 
                 href='https://www.wower.dev'
-                target='_blank'>wower.code</a> using 
-                the <a 
+                target='_blank'>wower.code</a><br/>
+                using the <a 
                 href='https://www.fantacss.smoljames.com'
                 target='_blank'>FantaCSS</a> design library.</p>
         </footer>
