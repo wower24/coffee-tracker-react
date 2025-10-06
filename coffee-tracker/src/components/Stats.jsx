@@ -1,4 +1,4 @@
-import { calculateCurrentCaffeineLevel, coffeeConsumptionHistory, statusLevels } from "../utils"
+import { calculateCoffeeStats, calculateCurrentCaffeineLevel, coffeeConsumptionHistory, getTopThreeCoffees, statusLevels } from "../utils"
 
 function StatCard(props) {
     const { lg, title, children } = props
@@ -12,14 +12,13 @@ function StatCard(props) {
 }
 
 export default function Stats() {
-    const stats = {
-        daily_caffeine: 240,
-        daily_cost: 6.8,
-        avg_coffees: 2.3,
-        total_cost: 220
-    }
+    const stats = calculateCoffeeStats(coffeeConsumptionHistory)
 
     const caffeineLevel = calculateCurrentCaffeineLevel(coffeeConsumptionHistory)
+    const warningLevel = caffeineLevel < statusLevels['low'].maxLevel ?
+    'low' :
+    caffeineLevel < statusLevels['moderate'].maxLevel ?
+    'moderate' : 'high'
 
     return (
         <>
@@ -32,16 +31,16 @@ export default function Stats() {
                     <div className='status'>
                         <p><span className='stat-text'>{caffeineLevel}</span>mg</p>
                         <h5 style={{
-                            color: statusLevels['low'].color,
-                            background: statusLevels['low'].background}}>Low</h5>
+                            color: statusLevels[warningLevel].color,
+                            background: statusLevels[warningLevel].background}}>{warningLevel}</h5>
                     </div>
-                    <p>{statusLevels['low'].description}</p>
+                    <p>{statusLevels[warningLevel].description}</p>
                 </StatCard>
                 <StatCard title='Daily Caffeine'>
                     <p><span className='stat-text'>{stats.daily_caffeine}</span>mg</p>
                 </StatCard>
                 <StatCard title='Avg # of Coffees'>
-                    <p><span className='stat-text'>{stats.avg_coffees}</span>mg</p>
+                    <p><span className='stat-text'>{stats.average_coffees}</span></p>
                 </StatCard>
                 <StatCard title='Daily Cost ($)'>
                     <p>$ <span className='stat-text'>{stats.daily_cost}</span></p>
@@ -49,6 +48,28 @@ export default function Stats() {
                 <StatCard title='Total Cost ($)'>
                     <p>$ <span className='stat-text'>{stats.total_cost}</span></p>
                 </StatCard>
+                <table className='stat-table'>
+                    <thead>
+                        <tr>
+                            <th>Coffee Name</th>
+                            <th>Number of Purchases</th>
+                            <th>Percentage of Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            getTopThreeCoffees(coffeeConsumptionHistory).map((coffee, coffeeIndex) => {
+                                return(
+                                    <tr key={coffeeIndex}>
+                                        <td>{coffee.coffeeName}</td>
+                                        <td>{coffee.count}</td>
+                                        <td>{coffee.percentage}</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
             </div>
         </>
     )
