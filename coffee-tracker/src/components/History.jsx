@@ -20,7 +20,7 @@ export default function History() {
                         })
 
                         const summary = `${coffee.name} | ${timeSinceConsume} | 
-                        ${originalAmount}mg / ${remainingAmount}mg | $${coffee.cost}`
+                        $${coffee.cost} | ${remainingAmount}mg / ${originalAmount}mg`
 
                         return(
                             <div 
