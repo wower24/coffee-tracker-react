@@ -37,7 +37,7 @@ export default function Layout(props) {
         <>
             { showModal && (
             <Modal onCloseModal={() => {setShowModal(false)}}>
-                <Authentication />
+                <Authentication onCloseModal={() => {setShowModal(false)}}/>
             </Modal>
             )}
             { header }

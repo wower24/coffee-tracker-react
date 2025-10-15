@@ -5,6 +5,10 @@ import { doc, getDoc } from 'firebase/firestore'
 
 const AuthContext = createContext()
 
+export function useAuth() {
+    return useContext(AuthContext)
+}
+
 export function AuthProvider(props) {
     const { children } = props
     const [globalUser, setGlobalUser] = useState(null)
@@ -36,6 +40,7 @@ export function AuthProvider(props) {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+             console.log('CURRENT USER: ', user)
             if(!user) { return }
 
             try {
